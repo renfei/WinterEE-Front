@@ -1,11 +1,21 @@
 <template>
     <v-app id="Main">
-        <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark >
+        <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
             <v-toolbar-title style="width: 200px" class="ml-0 pl-4">
                 <span class="hidden-sm-and-down">控制面板</span>
             </v-toolbar-title>
             <v-spacer/>
+            <v-row align="center" style="max-width: 150px">
+                <v-col>
+                    <v-select
+                            :items="tenants"
+                            dense
+                            hide-details
+                            outlined
+                    ></v-select>
+                </v-col>
+            </v-row>
             <v-btn icon>
                 <v-icon>mdi-apps</v-icon>
             </v-btn>
@@ -103,6 +113,7 @@
             source: String,
         },
         data: () => ({
+            tenants: ['Foo', 'Bar', 'Fizz', 'Buzz'],
             dialog: false,
             drawer: null,
             items: [
