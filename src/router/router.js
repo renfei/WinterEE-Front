@@ -26,7 +26,7 @@ const otherRouter = {
     component: Main,
     children: [
         {
-            path: 'home', title: "", name: 'Home', component: Home
+            path: 'home', meta: {title: "Home"}, name: 'home', component: Home
         }
     ]
 };

@@ -23,6 +23,7 @@
                                             :error="accounterror"
                                             outlined
                                             v-model="account"
+                                            @keyup.enter="checkAccount"
                                     />
                                     <v-row>
                                         <v-col cols="12" class="d-flex justify-space-between mb-6">
@@ -58,6 +59,7 @@
                                             :error="passworderror"
                                             outlined
                                             v-model="password"
+                                            @keyup.enter="doSignIn"
                                     />
                                     <v-row>
                                         <v-col cols="12" class="d-flex justify-space-between mb-6">
@@ -98,7 +100,8 @@
 </template>
 <script>
     import {checkAccount, signIn} from "../api/index";
-    import enc from "../libs/encryption";
+    import encryption from "../libs/encryption";
+    import {getStore, setStore} from '../libs/storage';
     export default {
         name: 'signin',
         props: {
@@ -128,9 +131,6 @@
                 this.$i18n.locale = this.getStore('locale');
             },
             checkAccount(){
-                enc.getAESKey().then(val => {
-                    console.log(val.aesKey);
-                });
                 this.loading = true;
                 this.accountmsg = "";
                 this.accounterror = false;
@@ -160,23 +160,30 @@
                 this.loading = true;
                 this.passwordmsg = "";
                 this.passworderror = false;
-                //登陆
-                let params = {
-                    name: this.account,
-                    password: this.password,
-                    grant_type: "auto_password",
-                    client_id: "Browser",
-                    client_secret: "w4nHQGH8oBsj4HMrgcYVyZRFPFbMUuLK",
-                    language: this.getStore('locale')
-                };
-                signIn(params).then(res => {
-                    if (res.code == 200) {
-                        this.$message(res.data, "info");
-                    } else {
-                        this.passwordmsg = res.message;
-                        this.passworderror = true;
-                    }
-                    this.loading = false;
+                encryption.aesEncrypt(this.password).then(val => {
+                    //登陆
+                    let params = {
+                        name: this.account,
+                        password: val.content,
+                        keyid: val.KeyId,
+                        grant_type: "auto_password",
+                        client_id: "Browser",
+                        client_secret: "w4nHQGH8oBsj4HMrgcYVyZRFPFbMUuLK",
+                        language: this.getStore('locale')
+                    };
+                    signIn(params).then(res => {
+                        if (res.code == 200) {
+                            setStore('accessToken',res.data.access_token);
+                            // TODO 时间戳
+                            setStore('accessTokenExpires',res.data.expires_in);
+                            setStore('refreshToken',res.data.refresh_token);
+                            this.$router.push({name:'home'});
+                        } else {
+                            this.passwordmsg = res.message;
+                            this.passworderror = true;
+                        }
+                        this.loading = false;
+                    });
                 });
             },
             sendtheverificationcode(){

@@ -1,5 +1,5 @@
 // 统一请求路径前缀在libs/axios.js中修改
-import {getRequest, postRequest, putRequest, deleteRequest, uploadFileRequest} from '../libs/axios';
+import {getRequest, postRequest, postFormRequest, deleteRequest, uploadFileRequest} from '../libs/axios';
 
 // <editor-fold desc="秘钥交换接口" defaultstate="collapsed">
 
@@ -10,7 +10,7 @@ export const getRSAkey = (params) => {
 
 // 上报客户端的RSA公钥
 export const uploadRSAkey = (params) => {
-    return postRequest('/core/secretkey', params)
+    return postRequest('/core/secretkey', params, "application/json")
 };
 
 // </editor-fold>
@@ -24,7 +24,7 @@ export const checkAccount = (params) => {
 
 // 登陆账户
 export const signIn = (params) => {
-    return postRequest('/uaa/oauth/token', params)
+    return postFormRequest('/uaa/oauth/token', params)
 };
 
 // </editor-fold>

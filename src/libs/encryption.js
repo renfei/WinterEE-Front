@@ -1,5 +1,6 @@
 import JsEncrypt from 'jsencrypt'
 import NodeRSA from 'node-rsa'
+import CryptoJS from 'crypto-js'
 import {getStore, setStore, removeStore} from './storage';
 import {getRSAkey, uploadRSAkey} from "../api/index";
 import Message from '../components/Message'
@@ -20,6 +21,27 @@ encryption.rsaDecrypt = (privateKey, content) => {
         privateKey +
         '\n-----END PRIVATE KEY-----\n');
     return jse.decrypt(content);
+};
+
+// AES 加密
+encryption.aesEncrypt = (content) => {
+    return new Promise((resolve, reject) => {
+        encryption.getAESKey().then((aesRes => {
+            let result = {};
+            result.KeyId = aesRes.aesKeyId;
+            result.content = aesencrypt(content, aesRes.aesKey);
+            resolve(result);
+        }));
+    });
+};
+
+// AES 解密
+encryption.aesDecrypt = (content) => {
+    return new Promise((resolve, reject) => {
+        encryption.getAESKey().then((aesRes => {
+            resolve(aesdecrypt(content, aesRes.aesKey));
+        }));
+    });
 };
 
 // 获取AES秘钥
@@ -107,6 +129,30 @@ function generateKey() {
     privateDer = privateDer.replace("-----BEGIN PRIVATE KEY-----\n", "").replace("\n-----END PRIVATE KEY-----", "");
     setStore('ClientPublicKey', publicDer);
     setStore('ClientPrivateKey', privateDer);
+}
+
+//加密
+function aesencrypt(word, keyStr) {
+    let key = CryptoJS.enc.Utf8.parse(keyStr);
+    let iv = CryptoJS.enc.Utf8.parse(keyStr);
+    let srcs = CryptoJS.enc.Utf8.parse(word);
+    var encrypted = CryptoJS.AES.encrypt(srcs, key, {
+        iv: iv,
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+
+    // var key = CryptoJS.enc.Utf8.parse(keyStr);//Latin1 w8m31+Yy/Nw6thPsMpO5fg==
+    // var srcs = CryptoJS.enc.Utf8.parse(word);
+    // var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
+    // return encrypted.toString();
+}
+//解密
+function aesdecrypt(word, keyStr) {
+    var key = CryptoJS.enc.Utf8.parse(keyStr);//Latin1 w8m31+Yy/Nw6thPsMpO5fg==
+    var decrypt = CryptoJS.AES.decrypt(word, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
+    return CryptoJS.enc.Utf8.stringify(decrypt).toString();
 }
 
 export default encryption;

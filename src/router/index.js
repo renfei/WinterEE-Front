@@ -24,11 +24,11 @@ router.beforeEach((to, from, next) => {
     } else if (getStore('lockscreen') === '0' && to.name === 'lockscreen') {
         next(false);
     } else {
-        if (!getStore('userInfo') && to.name !== 'signin' && to.name !== 'regist' && to.name !== 'regist-result' && to.name !== 'relate') { // 判断是否已经登录且前往的页面不是登录页
+        if (!getStore('accessToken') && to.name !== 'signin' && to.name !== 'regist' && to.name !== 'regist-result' && to.name !== 'relate') { // 判断是否已经登录且前往的页面不是登录页
             next({
                 name: 'signin'
             });
-        } else if (getStore('userInfo') && to.name === 'signin') {
+        } else if (getStore('accessToken') && to.name === 'signin') {
             // 判断是否已经登录且前往的是登录页
             Utils.title();
             next({
