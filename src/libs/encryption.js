@@ -1,0 +1,112 @@
+import JsEncrypt from 'jsencrypt'
+import NodeRSA from 'node-rsa'
+import {getStore, setStore, removeStore} from './storage';
+import {getRSAkey, uploadRSAkey} from "../api/index";
+import Message from '../components/Message'
+
+let encryption = {};
+
+// RSA加密
+encryption.rsaEncrypt = (publicKey, content) => {
+    let jse = new JsEncrypt();
+    jse.setPublicKey(publicKey);
+    return jse.encrypt(content);
+};
+
+// RSA解密
+encryption.rsaDecrypt = (privateKey, content) => {
+    let jse = new JsEncrypt();
+    jse.setPrivateKey('-----BEGIN PRIVATE KEY-----\n' +
+        privateKey +
+        '\n-----END PRIVATE KEY-----\n');
+    return jse.decrypt(content);
+};
+
+// 获取AES秘钥
+encryption.getAESKey = () => {
+    return new Promise((resolve, reject) => {
+        let key = getStore("aesKey");
+        // 如果Store里没有那么就去申请
+        if (key == null || key == undefined) {
+            // 生成客户端的公钥和私钥
+            encryption.getClientPublicKey().then(val => {
+                let params = {};
+                // 获取服务器端公钥
+                getRSAkey(params).then(res => {
+                    if (res.code != 200) {
+                        Message(res.message, "error");
+                        reject();
+                    }
+                    let serverPublicKey = res.data;
+                    let serverPublicKeyId = res.message;
+                    // 使用服务器端公钥加密客户端公钥，注意服务器端公钥是2048，客户端公钥是1024
+                    let clientEncryptPublicKey = encryption.rsaEncrypt(serverPublicKey, getStore("ClientPublicKey"));
+                    let reportPublicKeyVO = {};
+                    reportPublicKeyVO.secretKeyId = serverPublicKeyId;
+                    reportPublicKeyVO.publicKey = clientEncryptPublicKey;
+                    // 将加密好的客户端公钥上报给服务器
+                    uploadRSAkey(reportPublicKeyVO).then(serverRes => {
+                        if (serverRes.code == 200) {
+                            // 用客户端私钥解密服务器返回的AES秘钥
+                            let aesKey = encryption.rsaDecrypt(getStore("ClientPrivateKey"), serverRes.data.aeskey);
+                            let keys = {};
+                            keys.aesKey = aesKey;
+                            keys.aesKeyId = serverRes.data.keyid;
+                            // 存储下来 AES 秘钥，现在这个秘钥全世界只有你知和我知，不要公开，不要在网络上明文传输
+                            setStore("aesKey", aesKey);
+                            setStore("aesKeyId", serverRes.data.keyid);
+                            resolve(keys);
+                        } else {
+                            console.error(serverRes.message);
+                            Message(serverRes.message, "error");
+                            reject();
+                        }
+                    });
+                });
+            });
+        } else {
+            let keys = {};
+            keys.aesKey = getStore("aesKey");
+            keys.aesKeyId = getStore("aesKeyId");
+            resolve(keys);
+        }
+    });
+};
+
+// 获取客户端私钥
+encryption.getClientPrivateKey = () => {
+    return new Promise((resolve, reject) => {
+        let key = getStore("ClientPrivateKey");
+        if (key == null || key == undefined) {
+            generateKey();
+            resolve(getStore("ClientPrivateKey"));
+        }
+        resolve(key);
+    });
+};
+
+// 获取客户端公钥
+encryption.getClientPublicKey = () => {
+    return new Promise((resolve, reject) => {
+        let key = getStore("ClientPublicKey");
+        if (key == null || key == undefined) {
+            generateKey();
+            resolve(getStore("ClientPublicKey"));
+        }
+        resolve(key);
+    });
+};
+
+// 生成秘钥对
+function generateKey() {
+    const key = new NodeRSA({b: 1024});
+    key.setOptions({encryptionScheme: 'pkcs1'});//指定加密格式
+    let publicDer = key.exportKey("pkcs8-public-pem");  //公钥
+    let privateDer = key.exportKey("pkcs8-private-pem");//私钥
+    publicDer = publicDer.replace("-----BEGIN PUBLIC KEY-----\n", "").replace("\n-----END PUBLIC KEY-----", "");
+    privateDer = privateDer.replace("-----BEGIN PRIVATE KEY-----\n", "").replace("\n-----END PRIVATE KEY-----", "");
+    setStore('ClientPublicKey', publicDer);
+    setStore('ClientPrivateKey', privateDer);
+}
+
+export default encryption;

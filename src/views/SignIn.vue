@@ -98,6 +98,7 @@
 </template>
 <script>
     import {checkAccount, signIn} from "../api/index";
+    import enc from "../libs/encryption";
     export default {
         name: 'signin',
         props: {
@@ -127,6 +128,9 @@
                 this.$i18n.locale = this.getStore('locale');
             },
             checkAccount(){
+                enc.getAESKey().then(val => {
+                    console.log(val.aesKey);
+                });
                 this.loading = true;
                 this.accountmsg = "";
                 this.accounterror = false;
