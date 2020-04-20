@@ -28,3 +28,8 @@ export const signIn = (params) => {
 };
 
 // </editor-fold>
+
+// 获取菜单树
+export const getMenuTree = (params) => {
+    return getRequest('/core/menu/tree', params)
+};

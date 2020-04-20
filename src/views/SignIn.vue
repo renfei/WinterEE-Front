@@ -23,7 +23,6 @@
                                             :error="accounterror"
                                             outlined
                                             v-model="account"
-                                            @keyup.enter="checkAccount"
                                     />
                                     <v-row>
                                         <v-col cols="12" class="d-flex justify-space-between mb-6">
@@ -59,7 +58,6 @@
                                             :error="passworderror"
                                             outlined
                                             v-model="password"
-                                            @keyup.enter="doSignIn"
                                     />
                                     <v-row>
                                         <v-col cols="12" class="d-flex justify-space-between mb-6">
@@ -102,17 +100,16 @@
     import {checkAccount, signIn} from "../api/index";
     import encryption from "../libs/encryption";
     import {getStore, setStore} from '../libs/storage';
+    import locale from '../libs/locale';
+
+
     export default {
         name: 'signin',
         props: {
             source: String,
         },
         data: () => ({
-            lang_items: [
-                {text: '中文（简体）', value: 'zh-CN'},
-                {text: 'English(US)', value: 'en-US'},
-                {text: '日本語', value: 'ja-JP'}
-            ],
+            lang_items: locale.list(),
             showAccount: true,
             showPassword: false,
             show: false,
@@ -127,7 +124,7 @@
         }),
         methods: {
             lang_change(any){
-                this.setStore('locale', any);
+                locale.setLocale(any);
                 this.$i18n.locale = this.getStore('locale');
             },
             checkAccount(){
@@ -173,8 +170,10 @@
                     };
                     signIn(params).then(res => {
                         if (res.code == 200) {
+                            this.$message(res.data, "info");
+                            console.log(res.data);
                             setStore('accessToken',res.data.access_token);
-                            // TODO 时间戳
+                            //T
                             setStore('accessTokenExpires',res.data.expires_in);
                             setStore('refreshToken',res.data.refresh_token);
                             this.$router.push({name:'home'});

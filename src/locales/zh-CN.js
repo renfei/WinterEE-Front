@@ -1,4 +1,5 @@
 export const lang = {
+    home: "首页",
     error: "错误",
     language: "语言",
     signin: "登录",

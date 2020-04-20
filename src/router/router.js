@@ -1,3 +1,4 @@
+import i18n from '../locales/i18n'
 import Main from '@/Main.vue'
 import Home from '@/views/Home.vue'
 import SignIn from '@/views/SignIn.vue'

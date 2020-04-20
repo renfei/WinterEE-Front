@@ -1,4 +1,5 @@
 export const lang = {
+    home: "Home",
     error: "Error",
     language: "Language",
     signin: "Sign In",

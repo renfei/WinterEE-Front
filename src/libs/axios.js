@@ -1,6 +1,6 @@
 import vue from 'vue';
 import axios from 'axios';
-import {getStore, setStore} from './storage';
+import {getStore, setStore, removeStore} from './storage';
 import router from '../router/index';
 import Message from '../components/Message'
 // 统一请求路径前缀
@@ -49,6 +49,13 @@ axios.interceptors.response.use(response => {
 
     return data;
 }, (err) => {
+    console.error(JSON.stringify(err))
+    if (err.message === "Request failed with status code 401") {
+        removeStore('userInfo');
+        removeStore('accessToken');
+        router.push('/signin');
+        return Promise.resolve(err);
+    }
     // 返回状态码不为200时候的错误处理
     Message(err.toString(), 'error');
     return Promise.resolve(err);
@@ -56,9 +63,9 @@ axios.interceptors.response.use(response => {
 
 export const getRequest = (url, params) => {
     let accessToken = getStore('accessToken');
-    let headers={};
-    if(accessToken!=null){
-        headers={
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
             'Authorization': "Bearer " + accessToken
         }
     }
@@ -72,14 +79,14 @@ export const getRequest = (url, params) => {
 
 export const postRequest = (url, params) => {
     let accessToken = getStore("accessToken");
-    let headers={};
-    if(accessToken!=null){
-        headers={
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + accessToken
         }
-    }else {
-        headers={
+    } else {
+        headers = {
             'Content-Type': 'application/json'
         }
     }
@@ -93,14 +100,14 @@ export const postRequest = (url, params) => {
 
 export const postFormRequest = (url, params) => {
     let accessToken = getStore("accessToken");
-    let headers={};
-    if(accessToken!=null){
-        headers={
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': "Bearer " + accessToken
         }
-    }else {
-        headers={
+    } else {
+        headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
@@ -121,14 +128,14 @@ export const postFormRequest = (url, params) => {
 
 export const putFormRequest = (url, params) => {
     let accessToken = getStore("accessToken");
-    let headers={};
-    if(accessToken!=null){
-        headers={
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': "Bearer " + accessToken
         }
-    }else {
-        headers={
+    } else {
+        headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
@@ -149,9 +156,9 @@ export const putFormRequest = (url, params) => {
 
 export const deleteRequest = (url, params) => {
     let accessToken = getStore('accessToken');
-    let headers={};
-    if(accessToken!=null){
-        headers={
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
             'Authorization': "Bearer " + accessToken
         }
     }
@@ -165,9 +172,9 @@ export const deleteRequest = (url, params) => {
 
 export const uploadFileRequest = (url, params) => {
     let accessToken = getStore('accessToken');
-    let headers={};
-    if(accessToken!=null){
-        headers={
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
             'Authorization': "Bearer " + accessToken
         }
     }
