@@ -126,6 +126,27 @@ export const postFormRequest = (url, params) => {
     });
 };
 
+export const putRequest = (url, params) => {
+    let accessToken = getStore("accessToken");
+    let headers = {};
+    if (accessToken != null) {
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + accessToken
+        }
+    } else {
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }
+    return axios({
+        method: 'put',
+        url: `${base}${url}`,
+        data: params,
+        headers: headers
+    });
+};
+
 export const putFormRequest = (url, params) => {
     let accessToken = getStore("accessToken");
     let headers = {};

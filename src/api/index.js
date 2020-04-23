@@ -1,5 +1,12 @@
 // 统一请求路径前缀在libs/axios.js中修改
-import {getRequest, postRequest, postFormRequest, deleteRequest, uploadFileRequest} from '../libs/axios';
+import {
+    getRequest,
+    postRequest,
+    postFormRequest,
+    putRequest,
+    deleteRequest,
+    uploadFileRequest
+} from '../libs/axios';
 
 // <editor-fold desc="秘钥交换接口" defaultstate="collapsed">
 
@@ -32,4 +39,34 @@ export const signIn = (params) => {
 // 获取菜单树
 export const getMenuTree = (params) => {
     return getRequest('/core/menu/tree', params)
+};
+
+// 获取管理的菜单树
+export const getSettingMenuTree = (params) => {
+    return getRequest('/core/setting/menu/tree', params)
+};
+
+// 获取管理的菜单列表
+export const getSettingMenuList = (params) => {
+    return getRequest('/core/setting/menu/list', params)
+};
+
+// 获取管理的菜单详情
+export const getSettingMenu = (params) => {
+    return getRequest('/core/setting/menu', params)
+};
+
+// 添加管理的菜单详情
+export const addSettingMenu = (params) => {
+    return postRequest('/core/setting/menu', params)
+};
+
+// 修改管理的菜单详情
+export const updateSettingMenu = (params) => {
+    return putRequest('/core/setting/menu', params)
+};
+
+// 删除管理的菜单
+export const deleteSettingMenu = (params) => {
+    return deleteRequest('/core/setting/menu', params)
 };

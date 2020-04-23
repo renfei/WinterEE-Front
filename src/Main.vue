@@ -3,7 +3,7 @@
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
             <v-toolbar-title style="width: 200px" class="ml-0 pl-4">
-                <span class="hidden-sm-and-down">控制面板</span>
+                <span class="hidden-sm-and-down">{{$t("lang.dashboard")}}</span>
             </v-toolbar-title>
             <v-spacer/>
             <v-row align="center" style="max-width: 150px">
@@ -19,7 +19,7 @@
             </v-btn>
             <v-btn icon large>
                 <v-avatar size="32px" item>
-                    <v-img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify"/>
+                    <v-img :src="require('./assets/profile_pic.svg')" alt="profile"/>
                 </v-avatar>
             </v-btn>
         </v-app-bar>
