@@ -3,6 +3,8 @@ import Home from '@/views/Home.vue'
 import SignIn from '@/views/SignIn.vue'
 import LockScreen from '@/views/LockScreen.vue'
 import SettingMenu from '../views/SettingMenu.vue'
+import SettingTenant from '../views/SettingTenant.vue'
+import SettingLog from '../views/SettingLog.vue'
 
 const signInRouter = {
     path: '/signin',
@@ -32,6 +34,12 @@ const otherRouter = {
         },
         {
             path: 'setting/menu', meta: {title: "Setting Menu"}, name: 'settingMenu', component: SettingMenu
+        },
+        {
+            path: 'setting/tenant', meta: {title: "Setting Tenant"}, name: 'settingTenant', component: SettingTenant
+        },
+        {
+            path: 'setting/log', meta: {title: "Logs"}, name: 'settingLog', component: SettingLog
         }
     ]
 };

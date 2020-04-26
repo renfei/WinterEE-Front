@@ -8,7 +8,8 @@
             <v-spacer/>
             <v-row align="center" style="max-width: 150px">
                 <v-col>
-                    <v-select :items="lang_items" v-model="this.$i18n.locale" @change="lang_change" :dense="true" hide-details outlined></v-select>
+                    <v-select :items="lang_items" v-model="this.$i18n.locale" @change="lang_change" :dense="true"
+                              hide-details outlined></v-select>
                 </v-col>
             </v-row>
             <v-btn icon>
@@ -35,7 +36,7 @@
                             append-icon=""
                     >
                         <template v-slot:activator>
-                            <v-list-item-content>
+                            <v-list-item-content @click="menu_click(item)">
                                 <v-list-item-title>
                                     {{ item.text }}
                                 </v-list-item-title>
@@ -49,7 +50,7 @@
                             <v-list-item-action v-if="child.icon">
                                 <v-icon>{{ child.icon }}</v-icon>
                             </v-list-item-action>
-                            <v-list-item-content @click="menu_click('aa')">
+                            <v-list-item-content @click="menu_click(child)">
                                 <v-list-item-title>
                                     {{ child.text }}
                                 </v-list-item-title>
@@ -61,10 +62,10 @@
                             :key="item.text"
                             link
                     >
-                        <v-list-item-action @click="menu_click('aa')">
+                        <v-list-item-action @click="menu_click(item)">
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-action>
-                        <v-list-item-content @click="menu_click('aa')">
+                        <v-list-item-content @click="menu_click(item)">
                             <v-list-item-title>
                                 {{ item.text }}
                             </v-list-item-title>
@@ -76,7 +77,7 @@
         <!--v-navigation-drawer end-->
         <v-content>
             <v-container class="fill-height" fluid>
-                <router-view></router-view>
+                <router-view :key="routerKey"></router-view>
             </v-container>
         </v-content>
     </v-app>
@@ -84,6 +85,7 @@
 <script>
     import {getMenuTree} from './api/index'
     import locale from './libs/locale'
+    import router from './router/index';
 
     export default {
         name: 'main',
@@ -91,7 +93,8 @@
             source: String,
         },
         data: () => ({
-            locale:"",
+            routerKey:"",
+            locale: "",
             lang_items: locale.list(),
             tenants: ['Foo', 'Bar', 'Fizz', 'Buzz'],
             dialog: false,
@@ -107,16 +110,27 @@
                     language: this.getStore('locale')
                 };
                 getMenuTree(params).then(res => {
-                    this.items=res.data;
+                    this.items = res.data;
                 });
             },
             lang_change(any){
                 locale.setLocale(any);
                 this.$i18n.locale = this.getStore('locale');
                 this.load_menu();
+                this.routerKey = new Date().getTime();
             },
             menu_click(value){
-                alert(value);
+                if (value.href != null && value.href != undefined && value.href != "") {
+                    if (value.target === "_blank") {
+                        window.open(value.href);
+                    } else {
+                        if (value.href.indexOf("/") == 0) {
+                            router.push(value.href);
+                        } else if (value.href.indexOf("http") == 0) {
+                            window.location.href = value.href;
+                        }
+                    }
+                }
             }
         }
     }

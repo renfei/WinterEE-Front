@@ -70,3 +70,18 @@ export const updateSettingMenu = (params) => {
 export const deleteSettingMenu = (params) => {
     return deleteRequest('/core/setting/menu', params)
 };
+
+// 获取日志的类别列表
+export const getSettingLogTypeList = (params) => {
+    return getRequest('/core/setting/logs/type', params)
+};
+
+// 获取日志的子类别列表
+export const getSettingLogSubTypeList = (params) => {
+    return getRequest('/core/setting/logs/subtype', params)
+};
+
+// 获取日志
+export const getSettingLog = (params) => {
+    return getRequest('/core/setting/logs', params)
+};
