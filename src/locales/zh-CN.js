@@ -38,5 +38,6 @@ export const lang = {
     searchdirectory: "搜索目录",
     casesensitivesearch: "区分大小写搜索",
     pleaseselecttheelementtooperatefirst: "请先选择要操作的元素",
-    areyousureyouwanttodeleteitThisoperationisirreversible:"您确定要删除吗？这个操作不可逆转！"
+    areyousureyouwanttodeleteitThisoperationisirreversible:"您确定要删除吗？这个操作不可逆转！",
+    secretisonlydisplayedoncepleasesave:"Secret只显示一次，请注意保存！"
 }

@@ -321,6 +321,17 @@
                 };
             },
             delete_do(){
+                let params = this.menu;
+                deleteSettingMenu(params).then(res=>{
+                    if (res.code == 200) {
+                        this.load_setting_menu_tree();
+                        this.local_setting_menu_list();
+                        this.$message("OK", "info");
+                        this.clean_menu();
+                    } else {
+                        this.$message(this.$t("lang.error") + res.message, "error");
+                    }
+                });
                 this.delete_dialog = false;
             },
             btn_delete(){

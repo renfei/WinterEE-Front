@@ -5,6 +5,7 @@ import LockScreen from '@/views/LockScreen.vue'
 import SettingMenu from '../views/SettingMenu.vue'
 import SettingTenant from '../views/SettingTenant.vue'
 import SettingLog from '../views/SettingLog.vue'
+import SettingOAuthClient from '../views/SettingOAuthClient.vue'
 
 const signInRouter = {
     path: '/signin',
@@ -40,6 +41,9 @@ const otherRouter = {
         },
         {
             path: 'setting/log', meta: {title: "Logs"}, name: 'settingLog', component: SettingLog
+        },
+        {
+            path: 'setting/oauthclient', meta: {title: "OAuthClient"}, name: 'settingOAuthClient', component: SettingOAuthClient
         }
     ]
 };

@@ -3,6 +3,10 @@
         <v-data-table
                 :headers="headers"
                 :items="desserts"
+                :items-per-page="options.rows"
+                :page="options.page"
+                :options.sync="options"
+                item-key="uuid"
                 class="elevation-1"
                 style="width: 100%"
         >
@@ -28,22 +32,11 @@
                                         <v-row>
                                             <v-col cols="12" sm="6" md="4">
                                                 <v-text-field v-model="editedItem.name"
-                                                              label="Dessert name"></v-text-field>
+                                                              label="名称"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.calories"
-                                                              label="Calories"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.carbs"
-                                                              label="Carbs (g)"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.protein"
-                                                              label="Protein (g)"></v-text-field>
+                                                <v-text-field v-model="editedItem.expiryDate"
+                                                              label="过期时间"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -67,12 +60,6 @@
                 >
                     mdi-pencil
                 </v-icon>
-                <v-icon
-                        small
-                        @click="deleteItem(item)"
-                >
-                    mdi-delete
-                </v-icon>
             </template>
             <template v-slot:no-data>
                 <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -81,38 +68,52 @@
     </v-container>
 </template>
 <script type="text/ecmascript-6">
+    import {getSettingTeantList, addSettingTeantList, updateSettingTeantList} from '../api/index'
+
     export default {
         data(){
             return {
                 dialog: false,
+                serveritemslength:0,
+                options: {
+                    page: 1,
+                    itemsPerPage: 10,
+                    pageStart: 1,
+                    pageStop: 1,
+                    sortDesc: [false, false]
+                },
                 headers: [
                     {
-                        text: 'Dessert (100g serving)',
+                        text: '名称',
                         align: 'start',
                         sortable: false,
                         value: 'name',
                     },
-                    {text: 'Calories', value: 'calories'},
-                    {text: 'Fat (g)', value: 'fat'},
-                    {text: 'Carbs (g)', value: 'carbs'},
-                    {text: 'Protein (g)', value: 'protein'},
+                    {text: '添加时间', value: 'createTime', sortable: false},
+                    {text: '过期时间', value: 'expiryDate', sortable: false},
+                    {text: '状态', value: 'status', sortable: false},
+                    {text: 'UUID', value: 'uuid', sortable: false},
                     {text: 'Actions', value: 'actions', sortable: false},
                 ],
                 desserts: [],
                 editedIndex: -1,
                 editedItem: {
-                    name: '',
-                    calories: 0,
-                    fat: 0,
-                    carbs: 0,
-                    protein: 0,
+                    createTime: "",
+                    expiryDate: "",
+                    id: 1,
+                    name: "",
+                    status: 1,
+                    updateTime: null,
+                    uuid: ""
                 },
                 defaultItem: {
-                    name: '',
-                    calories: 0,
-                    fat: 0,
-                    carbs: 0,
-                    protein: 0,
+                    createTime: "",
+                    expiryDate: "",
+                    id: 1,
+                    name: "",
+                    status: 1,
+                    updateTime: null,
+                    uuid: ""
                 },
             }
         },
@@ -129,164 +130,24 @@
         },
 
         created () {
-            this.initialize()
+            this.initialize();
         },
 
         methods: {
             initialize () {
-                this.desserts = [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                    },
-                    {
-                        name: 'Jelly bean',
-                        calories: 375,
-                        fat: 0.0,
-                        carbs: 94,
-                        protein: 0.0,
-                    },
-                    {
-                        name: 'Lollipop',
-                        calories: 392,
-                        fat: 0.2,
-                        carbs: 98,
-                        protein: 0,
-                    },
-                    {
-                        name: 'Honeycomb',
-                        calories: 408,
-                        fat: 3.2,
-                        carbs: 87,
-                        protein: 6.5,
-                    },
-                    {
-                        name: 'Donut',
-                        calories: 452,
-                        fat: 25.0,
-                        carbs: 51,
-                        protein: 4.9,
-                    },
-                    {
-                        name: 'KitKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                    },
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                    },
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                    },
-                ]
+                let params = {};
+                params.page = this.options.page;
+                params.rows = this.options.itemsPerPage;
+                getSettingTeantList(params).then(res => {
+                    this.serveritemslength = res.data.total;
+                    this.desserts = res.data.data;
+                });
             },
 
             editItem (item) {
                 this.editedIndex = this.desserts.indexOf(item)
                 this.editedItem = Object.assign({}, item)
                 this.dialog = true
-            },
-
-            deleteItem (item) {
-                const index = this.desserts.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
             },
 
             close () {
@@ -299,11 +160,20 @@
 
             save () {
                 if (this.editedIndex > -1) {
-                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                    // 更新
+                    updateSettingTeantList(this.editedItem).then(res => {
+                        this.initialize();
+                        this.close()
+                    });
+
                 } else {
-                    this.desserts.push(this.editedItem)
+                    // 添加
+                    addSettingTeantList(this.editedItem).then(res => {
+                        this.initialize();
+                        this.close()
+                    });
                 }
-                this.close()
+                this.initialize();
             },
         },
     }

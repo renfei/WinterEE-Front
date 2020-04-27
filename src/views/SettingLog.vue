@@ -3,8 +3,8 @@
         <v-data-table
                 :headers="headers"
                 :items="desserts"
-                :items-per-page="query_params.rows"
-                :page="query_params.page"
+                :items-per-page="options.rows"
+                :page="options.page"
                 :options.sync="options"
                 item-key="uuid"
                 :server-items-length="serveritemslength"

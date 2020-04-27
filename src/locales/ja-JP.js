@@ -38,5 +38,6 @@ export const lang = {
     searchdirectory:"ディレクトリを検索",
     casesensitivesearch: "大文字と小文字を区別して検索します",
     pleaseselecttheelementtooperatefirst: "まず操作する要素を選択してください",
-    areyousureyouwanttodeleteitThisoperationisirreversible:"本当に削除しますか？この操作は逆転できません。"
+    areyousureyouwanttodeleteitThisoperationisirreversible:"本当に削除しますか？この操作は逆転できません。",
+    secretisonlydisplayedoncepleasesave:"Secretは一回だけ表示されますので、注意して保存してください。"
 }

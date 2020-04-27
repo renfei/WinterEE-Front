@@ -38,5 +38,6 @@ export const lang = {
     searchdirectory: "Search Directory",
     casesensitivesearch: "Case sensitive search",
     pleaseselecttheelementtooperatefirst: "Please select the element to operate first",
-    areyousureyouwanttodeleteitThisoperationisirreversible:"Are you sure you want to delete it? This operation is irreversible!"
+    areyousureyouwanttodeleteitThisoperationisirreversible:"Are you sure you want to delete it? This operation is irreversible!",
+    secretisonlydisplayedoncepleasesave:"Secret is only displayed once, please save!"
 }

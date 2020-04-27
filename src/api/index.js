@@ -36,6 +36,8 @@ export const signIn = (params) => {
 
 // </editor-fold>
 
+// <editor-fold desc="菜单类接口" defaultstate="collapsed">
+
 // 获取菜单树
 export const getMenuTree = (params) => {
     return getRequest('/core/menu/tree', params)
@@ -71,6 +73,10 @@ export const deleteSettingMenu = (params) => {
     return deleteRequest('/core/setting/menu', params)
 };
 
+// </editor-fold>
+
+// <editor-fold desc="日志类接口" defaultstate="collapsed">
+
 // 获取日志的类别列表
 export const getSettingLogTypeList = (params) => {
     return getRequest('/core/setting/logs/type', params)
@@ -85,3 +91,47 @@ export const getSettingLogSubTypeList = (params) => {
 export const getSettingLog = (params) => {
     return getRequest('/core/setting/logs', params)
 };
+
+// </editor-fold>
+
+// <editor-fold desc="租户类接口" defaultstate="collapsed">
+
+// 获取租户列表
+export const getSettingTeantList = (params) => {
+    return getRequest('/core/setting/tenant', params)
+};
+
+// 新增租户
+export const addSettingTeantList = (params) => {
+    return postRequest('/core/setting/tenant', params)
+};
+
+// 修改租户
+export const updateSettingTeantList = (params) => {
+    return putRequest('/core/setting/tenant', params)
+};
+
+// </editor-fold>
+
+// <editor-fold desc="OAuth客户端类接口" defaultstate="collapsed">
+
+// 获取OAuth客户端列表
+export const getSettingOAuthClientList = (params) => {
+    return getRequest('/core/setting/oauthclient', params)
+};
+
+// 新增OAuth客户端
+export const addSettingOAuthClient = (params) => {
+    return postRequest('/core/setting/oauthclient', params)
+};
+
+// 修改OAuth客户端
+export const updateSettingOAuthClient = (params) => {
+    return putRequest('/core/setting/oauthclient', params)
+};
+
+// 删除OAuth客户端
+export const deleteSettingOAuthClient = (params) => {
+    return deleteRequest('/core/setting/oauthclient', params)
+};
+// </editor-fold>
