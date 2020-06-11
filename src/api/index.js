@@ -34,6 +34,10 @@ export const signIn = (params) => {
     return postFormRequest('/uaa/oauth/token', params)
 };
 
+export const getMyInfo = (params) => {
+    return getRequest('/core/account/myinfo', params)
+};
+
 // </editor-fold>
 
 // <editor-fold desc="菜单类接口" defaultstate="collapsed">
@@ -97,6 +101,11 @@ export const getSettingLog = (params) => {
 // <editor-fold desc="租户类接口" defaultstate="collapsed">
 
 // 获取租户列表
+export const getTeantList = (params) => {
+    return getRequest('/core/setting/tenantlist', params)
+}
+
+// 获取租户列表
 export const getSettingTeantList = (params) => {
     return getRequest('/core/setting/tenant', params)
 };
@@ -109,6 +118,16 @@ export const addSettingTeantList = (params) => {
 // 修改租户
 export const updateSettingTeantList = (params) => {
     return putRequest('/core/setting/tenant', params)
+};
+
+//获取租户基础信息
+export const getTeantInfo = (params) => {
+    return getRequest('/core/tenant/info', params)
+};
+
+//更新租户基础信息
+export const updateTeantInfo = (params) => {
+    return postRequest('/core/tenant/info', params)
 };
 
 // </editor-fold>

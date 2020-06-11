@@ -6,6 +6,14 @@
                 <span class="hidden-sm-and-down">{{$t("lang.dashboard")}}</span>
             </v-toolbar-title>
             <v-spacer/>
+            <v-row align="center" style="max-width: 150px;margin-right: 10px;">
+                <v-col>
+                    <v-select :items="tenants" v-model="this.tenantID" item-text="name" item-value="uuid"
+                              @change="changeTenant"
+                              :dense="true" v-if="this.showTenantList"
+                              hide-details outlined></v-select>
+                </v-col>
+            </v-row>
             <v-row align="center" style="max-width: 150px">
                 <v-col>
                     <v-select :items="lang_items" v-model="this.$i18n.locale" @change="lang_change" :dense="true"
@@ -83,7 +91,7 @@
     </v-app>
 </template>
 <script>
-    import {getMenuTree} from './api/index'
+    import {getMenuTree, getMyInfo, getTeantList} from './api/index'
     import locale from './libs/locale'
     import router from './router/index';
 
@@ -93,33 +101,72 @@
             source: String,
         },
         data: () => ({
-            routerKey:"",
+            routerKey: "",
             locale: "",
             lang_items: locale.list(),
-            tenants: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+            tenants: [],
+            showTenantList: false,
             dialog: false,
             drawer: null,
             items: [],
+            tenantID: "",
+            myinfo: {
+                authorities: [],
+                createTime: "",
+                email: "",
+                lockTime: "",
+                passwd: "",
+                phone: "",
+                tenantUuid: "",
+                userName: "",
+                userStatus: "",
+                uuid: ""
+            },
         }),
-        created(){
+        created() {
             this.load_menu();
+            this.load_myinfo();
+            this.load_teantList();
         },
         methods: {
-            load_menu(){
+             load_myinfo() {
+                let params = {};
+                 getMyInfo(params).then(res => {
+                    this.myinfo = res.data;
+                    this.tenantID = this.myinfo.tenantUuid;
+                    return res.data;
+                });
+            },
+            load_teantList() {
+                let params = {};
+                getTeantList(params).then(res => {
+                    this.tenants = res.data.data;
+                    if (this.tenants.length >= 1) {
+                        this.showTenantList = true;
+                    } else {
+                        this.showTenantList = false;
+                    }
+                });
+            },
+            load_menu() {
                 let params = {
+                    tenant: this.tenantID,
                     language: this.getStore('locale')
                 };
                 getMenuTree(params).then(res => {
                     this.items = res.data;
                 });
             },
-            lang_change(any){
+            lang_change(any) {
                 locale.setLocale(any);
                 this.$i18n.locale = this.getStore('locale');
                 this.load_menu();
                 this.routerKey = new Date().getTime();
             },
-            menu_click(value){
+            changeTenant(any) {
+                this.tenantID = any;
+            },
+            menu_click(value) {
                 if (value.href != null && value.href != undefined && value.href != "") {
                     if (value.target === "_blank") {
                         window.open(value.href);
@@ -131,7 +178,16 @@
                         }
                     }
                 }
+            },
+            getTenantID() {
+                return this.tenantID;
             }
-        }
+        },
+        // 父组件中返回要传给下级的数据
+        provide () {
+            return {
+                getTenantID: this.getTenantID
+            }
+        },
     }
 </script>

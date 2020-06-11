@@ -2,6 +2,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
+import BaiduMap from 'vue-baidu-map'
 import router from './router/index'
 import i18n from './locales/i18n'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
@@ -22,6 +23,11 @@ Vue.prototype.getStore = getStore;
 Vue.prototype.removeStore = removeStore;
 Vue.prototype.$message = Message;
 Vue.prototype.$global = globalVariable;
+
+Vue.use(BaiduMap, {
+    // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+    ak: 'OljGGx6QqphRhH277gS63dUqzcF4zQwt'
+});
 
 new Vue({
     vuetify,

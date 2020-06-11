@@ -6,6 +6,7 @@ import SettingMenu from '../views/SettingMenu.vue'
 import SettingTenant from '../views/SettingTenant.vue'
 import SettingLog from '../views/SettingLog.vue'
 import SettingOAuthClient from '../views/SettingOAuthClient.vue'
+import SettingTenantInfo from '../views/SettingTenantInfo.vue'
 
 const signInRouter = {
     path: '/signin',
@@ -38,6 +39,9 @@ const otherRouter = {
         },
         {
             path: 'setting/tenant', meta: {title: "Setting Tenant"}, name: 'settingTenant', component: SettingTenant
+        },
+        {
+            path: 'setting/tenantinfo', meta: {title: "Setting Tenant Info"}, name: 'settingTenantInfo', component: SettingTenantInfo
         },
         {
             path: 'setting/log', meta: {title: "Logs"}, name: 'settingLog', component: SettingLog
