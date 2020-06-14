@@ -76,8 +76,7 @@
                                            @moving="syncCenterAndZoom"
                                            @moveend="syncCenterAndZoom"
                                            @zoomend="syncCenterAndZoom"
-                                           @click="mapclick"
-                                           ak="OljGGx6QqphRhH277gS63dUqzcF4zQwt">
+                                           @click="mapclick">
                                 </baidu-map>
                             </v-col>
                         </v-row>

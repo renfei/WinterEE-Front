@@ -154,3 +154,22 @@ export const deleteSettingOAuthClient = (params) => {
     return deleteRequest('/core/setting/oauthclient', params)
 };
 // </editor-fold>
+
+// <editor-fold desc="组织机构类接口" defaultstate="collapsed">
+
+// 获取公司信息列表
+export const getCompanyList = (params) => {
+    return getRequest('/core/organization/company', params)
+};
+
+// 添加公司信息
+export const addCompany = (params) => {
+    return postRequest('/core/organization/company', params)
+};
+
+// 修改公司信息
+export const updateCompany = (params) => {
+    return putRequest('/core/organization/company', params)
+};
+
+// </editor-fold>

@@ -7,6 +7,7 @@ import SettingTenant from '../views/SettingTenant.vue'
 import SettingLog from '../views/SettingLog.vue'
 import SettingOAuthClient from '../views/SettingOAuthClient.vue'
 import SettingTenantInfo from '../views/SettingTenantInfo.vue'
+import Company from '../views/organization/Company.vue'
 
 const signInRouter = {
     path: '/signin',
@@ -48,6 +49,9 @@ const otherRouter = {
         },
         {
             path: 'setting/oauthclient', meta: {title: "OAuthClient"}, name: 'settingOAuthClient', component: SettingOAuthClient
+        },
+        {
+            path: 'organization/company', meta: {title: "Setting Company"}, name: 'settingCompany', component: Company
         }
     ]
 };
