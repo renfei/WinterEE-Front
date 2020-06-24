@@ -24,6 +24,11 @@ export const uploadRSAkey = (params) => {
 
 // <editor-fold desc="账户类接口" defaultstate="collapsed">
 
+// 查询账户列表
+export const getAccountList = (params) => {
+    return getRequest('/core/account', params)
+};
+
 // 查询账户
 export const checkAccount = (params) => {
     return getRequest('/core/account/check', params)
@@ -38,6 +43,26 @@ export const getMyInfo = (params) => {
     return getRequest('/core/account/myinfo', params)
 };
 
+// 添加账户
+export const addAccount = (params) => {
+    return postRequest('/core/account', params)
+};
+
+// 修改账户
+export const updateAccount = (params) => {
+    return putRequest('/core/account', params)
+};
+
+// 修改密码
+export const changePassword = (params) => {
+    return putRequest('/core/account/mypassword', params)
+};
+
+// 重置指定用户的密码
+export const resetPassword = (params) => {
+    return putRequest('/core/account/resetpassword', params)
+};
+
 // </editor-fold>
 
 // <editor-fold desc="菜单类接口" defaultstate="collapsed">
@@ -45,6 +70,11 @@ export const getMyInfo = (params) => {
 // 获取菜单树
 export const getMenuTree = (params) => {
     return getRequest('/core/menu/tree', params)
+};
+
+// 获取菜单树
+export const getMenuAndAuthorityTree = (params) => {
+    return getRequest('/core/menu/treeAndAuthority', params)
 };
 
 // 获取管理的菜单树
@@ -158,8 +188,23 @@ export const deleteSettingOAuthClient = (params) => {
 // <editor-fold desc="组织机构类接口" defaultstate="collapsed">
 
 // 获取公司信息列表
+export const getAllOrganizationTree = (params) => {
+    return getRequest('/core/organization', params)
+};
+
+// 获取公司信息列表
 export const getCompanyList = (params) => {
     return getRequest('/core/organization/company', params)
+};
+
+// 获取公司列表（简单列表非树状）
+export const getCompanySimpleList = (params) => {
+    return getRequest('/core/organization/company/simpleList', params)
+};
+
+// 获取我的公司信息列表
+export const getMyCompanyList = (params) => {
+    return getRequest('/core/organization/myCompany', params)
 };
 
 // 添加公司信息
@@ -172,4 +217,47 @@ export const updateCompany = (params) => {
     return putRequest('/core/organization/company', params)
 };
 
+// 获取部门信息列表
+export const getDepartmentList = (params) => {
+    return getRequest('/core/organization/department', params)
+};
+
+// 获取部门信息列表
+export const getDepartmentSimpleList = (params) => {
+    return getRequest('/core/organization/department/simpleList', params)
+};
+
+// 添加部门信息
+export const addDepartment = (params) => {
+    return postRequest('/core/organization/department', params)
+};
+
+// 修改部门信息
+export const updateDepartment = (params) => {
+    return putRequest('/core/organization/department', params)
+};
+
+// </editor-fold>
+
+// <editor-fold desc="角色类接口" defaultstate="collapsed">
+
+// 获取角色信息列表
+export const getRoleList = (params) => {
+    return getRequest('/core/role/list', params)
+};
+
+// 添加角色信息
+export const addRole = (params) => {
+    return postRequest('/core/role/data', params)
+};
+
+// 修改角色信息
+export const updateRole = (params) => {
+    return putRequest('/core/role/data', params)
+};
+
+// 删除角色信息
+export const deleteRole = (params) => {
+    return deleteRequest('/core/role/data', params)
+};
 // </editor-fold>

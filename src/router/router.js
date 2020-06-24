@@ -8,6 +8,9 @@ import SettingLog from '../views/SettingLog.vue'
 import SettingOAuthClient from '../views/SettingOAuthClient.vue'
 import SettingTenantInfo from '../views/SettingTenantInfo.vue'
 import Company from '../views/organization/Company.vue'
+import Department from '../views/organization/Department.vue'
+import Role from '../views/rights/role.vue'
+import Account from '../views/account/index.vue'
 
 const signInRouter = {
     path: '/signin',
@@ -52,6 +55,15 @@ const otherRouter = {
         },
         {
             path: 'organization/company', meta: {title: "Setting Company"}, name: 'settingCompany', component: Company
+        },
+        {
+            path: 'organization/department', meta: {title: "Setting Department"}, name: 'settingDepartment', component: Department
+        },
+        {
+            path: 'rights/role', meta: {title: "Setting Role"}, name: 'settingRole', component: Role
+        },
+        {
+            path: 'account', meta: {title: "Setting Account"}, name: 'settingAccount', component: Account
         }
     ]
 };

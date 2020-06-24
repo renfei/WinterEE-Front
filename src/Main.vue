@@ -84,7 +84,7 @@
         </v-navigation-drawer>
         <!--v-navigation-drawer end-->
         <v-content>
-            <v-container class="fill-height" fluid>
+            <v-container class="fill-height" fluid style="padding: 0;">
                 <router-view :key="routerKey"></router-view>
             </v-container>
         </v-content>
