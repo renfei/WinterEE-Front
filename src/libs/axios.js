@@ -196,13 +196,14 @@ export const uploadFileRequest = (url, params) => {
     let headers = {};
     if (accessToken != null) {
         headers = {
-            'Authorization': "Bearer " + accessToken
+            'Authorization': "Bearer " + accessToken,
+            "Content-Type": "multipart/form-data"
         }
     }
     return axios({
         method: 'post',
         url: `${base}${url}`,
-        params: params,
+        data: params,
         headers: headers
     });
 };

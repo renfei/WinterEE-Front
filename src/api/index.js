@@ -261,3 +261,110 @@ export const deleteRole = (params) => {
     return deleteRequest('/core/role/data', params)
 };
 // </editor-fold>
+
+// <editor-fold desc="CMS类接口" defaultstate="collapsed">
+
+// 获取站点信息列表
+export const getSiteList = (params) => {
+    return getRequest('/core/cms/site/list', params)
+};
+
+// 获取站点信息
+export const getSite = (params) => {
+    return getRequest('/core/cms/site', params)
+};
+
+// 添加站点信息
+export const addSite = (params) => {
+    return postRequest('/core/cms/site', params)
+};
+
+// 更新站点信息
+export const updateSite = (params) => {
+    return putRequest('/core/cms/site', params)
+};
+
+// 删除站点
+export const deleteSite = (params) => {
+    return deleteRequest('/core/cms/site', params)
+};
+
+// 获取文章分类信息列表
+export const getCategoryList = (params) => {
+    return getRequest('/core/cms/category/list', params)
+};
+
+// 获取文章分类信息
+export const getCategory = (params) => {
+    return getRequest('/core/cms/category', params)
+};
+
+// 添加文章分类信息
+export const addCategory = (params) => {
+    return postRequest('/core/cms/category', params)
+};
+
+// 修改文章分类信息
+export const updateCategory = (params) => {
+    return putRequest('/core/cms/category', params)
+};
+
+// 删除文章分类
+export const deleteCategory = (params) => {
+    return deleteRequest('/core/cms/category', params)
+};
+
+// 获取文章列表
+export const getPostsList = (params) => {
+    return getRequest('/core/cms/posts/list', params)
+};
+
+// 添加文章
+export const addPosts = (params) => {
+    return postRequest('/core/cms/posts', params)
+};
+
+// 修改文章
+export const updatePosts = (params) => {
+    return putRequest('/core/cms/posts', params)
+};
+
+// 删除文章
+export const deletePosts = (params) => {
+    return deleteRequest('/core/cms/posts', params)
+};
+
+// 获取文章标签列表
+export const getTagList = (params) => {
+    return getRequest('/core/cms/tag/list', params)
+};
+
+// 获取文章标签
+export const getTag = (params) => {
+    return getRequest('/core/cms/tag', params)
+};
+
+// 添加文章标签
+export const addTag = (params) => {
+    return postRequest('/core/cms/tag', params)
+};
+
+// 修改文章标签
+export const updateTag = (params) => {
+    return putRequest('/core/cms/tag', params)
+};
+
+// 删除文章标签
+export const deleteTag = (params) => {
+    return deleteRequest('/core/cms/tag', params)
+};
+
+// </editor-fold>
+
+export const uploadPublicFile = (params) => {
+    return uploadFileRequest('/core/uploadPublicFile', params)
+}
+
+export const uploadPrivateFile = (params) => {
+    return uploadFileRequest('/core/uploadPrivateFile', params)
+}

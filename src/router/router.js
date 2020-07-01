@@ -11,6 +11,10 @@ import Company from '../views/organization/Company.vue'
 import Department from '../views/organization/Department.vue'
 import Role from '../views/rights/role.vue'
 import Account from '../views/account/index.vue'
+import Site from '../views/cms/site.vue'
+import Category from '../views/cms/category.vue'
+import Tag from '../views/cms/tag.vue'
+import Posts from '../views/cms/posts.vue'
 
 const signInRouter = {
     path: '/signin',
@@ -64,6 +68,18 @@ const otherRouter = {
         },
         {
             path: 'account', meta: {title: "Setting Account"}, name: 'settingAccount', component: Account
+        },
+        {
+            path: 'cms/site', meta: {title: "Setting Site"}, name: 'settingSite', component: Site
+        },
+        {
+            path: 'cms/category', meta: {title: "Setting Category"}, name: 'settingCategory', component: Category
+        },
+        {
+            path: 'cms/tag', meta: {title: "Setting Tag"}, name: 'settingTag', component: Tag
+        },
+        {
+            path: 'cms/posts', meta: {title: "Setting Posts"}, name: 'settingPosts', component: Posts
         }
     ]
 };
